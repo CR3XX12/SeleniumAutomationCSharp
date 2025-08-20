@@ -10,11 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SeleniumAutomation
+namespace SeleniumAutomation.Testcases
 {
     class TestBrowser
     {
-        static String browser = "firefox"; // Notepad
+        static string browser = "firefox"; // Notepad
         static IWebDriver driver;
         
         static void Main(string[] args)
@@ -35,7 +35,7 @@ namespace SeleniumAutomation
             driver.Manage().Window.Maximize();
 
             //Implicit wait and Explicit wait (fluent wait)
-            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
 
