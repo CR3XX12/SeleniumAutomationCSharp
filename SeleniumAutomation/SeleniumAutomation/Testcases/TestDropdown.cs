@@ -26,13 +26,30 @@ namespace SeleniumAutomation.Testcases
             //select.SelectByText("Eesti"); 
             select.SelectByValue("hi");
 
-            var values = driver.FindElements(By.TagName("option"));
+            var values = dropdown.FindElements(By.TagName("option"));
 
             Console.WriteLine("Total values are: " + values.Count);
 
             foreach (var value in values)
             {
                 Console.WriteLine(value.Text+ " Value is: " + value.GetAttribute("value"));
+
+            }
+
+            Console.WriteLine("----printing footer links-------");
+
+           // IWebElement section2 = driver.FindElement(By.XPath("//section2"));
+           // driver.FindElements(By.Id("abc"))[1].Click(); //Narrowing to particular element
+
+            IWebElement section = driver.FindElement(By.XPath("//*[@id=\"www-wikipedia-org\"]/footer/nav"));
+            
+
+            var links = section.FindElements(By.TagName("a"));
+            Console.WriteLine("Total links are: " + links.Count);
+
+            foreach (var link in links)
+            {
+                Console.WriteLine(link.Text + "URL is: " + link.GetAttribute("href"));
 
             }
         }
