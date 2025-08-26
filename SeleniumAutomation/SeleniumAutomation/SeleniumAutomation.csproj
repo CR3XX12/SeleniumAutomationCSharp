@@ -5,7 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject>SeleniumAutomation.Testcases.TestMouseMovement</StartupObject>
+    <StartupObject>SeleniumAutomation.Testcases.TestSlider</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
