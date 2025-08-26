@@ -5,7 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject>SeleniumAutomation.Testcases.TestResizable</StartupObject>
+    <StartupObject>SeleniumAutomation.Testcases.TestDroppable</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
