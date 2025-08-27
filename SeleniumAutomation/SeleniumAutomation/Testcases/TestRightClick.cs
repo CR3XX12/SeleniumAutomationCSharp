@@ -34,8 +34,6 @@ namespace SeleniumAutomation.Testcases
 
             new Actions(driver).MoveToElement(click4).Click().Perform();
 
-
-
         }
     }
 }

@@ -18,7 +18,14 @@ namespace SeleniumAutomation.Testcases
             driver.Manage().Window.Maximize();
 
             driver.SwitchTo().Frame("iframeResult");
-            driver.FindElement(By.XPath("//*[@id=\"myForm\"]/input[3]")).Click();
+            //driver.FindElement(By.XPath("//*[@id=\"myForm\"]/input[3]")).Click();            
+
+            IWebElement elem = driver.FindElement(By.XPath("//*[@id=\"myForm\"]/input[3]"));
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].style.border='3px solid red'", elem);
+
+            Thread.Sleep(3000); // Visual purpose
+
+            ((IJavaScriptExecutor)driver).ExecuteScript("myFunction()");
 
             driver.SwitchTo().DefaultContent();
 

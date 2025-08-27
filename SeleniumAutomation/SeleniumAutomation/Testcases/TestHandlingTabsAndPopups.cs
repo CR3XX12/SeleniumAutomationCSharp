@@ -38,7 +38,7 @@ namespace SeleniumAutomation.Testcases
 
             driver.SwitchTo().Window(winids[0]); // 
 
-            Thread.Sleep(3000);
+            Thread.Sleep(3000); //Visual purpose
 
             winids = driver.WindowHandles;
             Console.WriteLine("Total windows count: " + winids.Count());
