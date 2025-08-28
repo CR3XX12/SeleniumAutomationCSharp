@@ -14,4 +14,8 @@
     <PackageReference Include="SeleniumExtras.WaitHelpers" Version="1.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="screenshot\" />
+  </ItemGroup>
+
 </Project>
