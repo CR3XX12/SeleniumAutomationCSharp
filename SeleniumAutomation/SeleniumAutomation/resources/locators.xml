@@ -2,11 +2,11 @@
 <LoginPage>
 	<username>
 		<LocatorType>ID</LocatorType>
-		<LocatorValue>username</LocatorValue>
+		<LocatorValue>email</LocatorValue>
 	</username>
 	<password>
 		<LocatorType>XPATH</LocatorType>
-		<LocatorValue>//*[@id='pass']</LocatorValue>
+		<LocatorValue>//*[@id="pass"]</LocatorValue>
 	</password>
 	<loginbutton>
 		<LocatorType>CSS</LocatorType>
