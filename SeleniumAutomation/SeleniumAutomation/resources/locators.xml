@@ -1,0 +1,30 @@
+﻿<locators>
+<LoginPage>
+	<username>
+		<LocatorType>ID</LocatorType>
+		<LocatorValue>username</LocatorValue>
+	</username>
+	<password>
+		<LocatorType>XPATH</LocatorType>
+		<LocatorValue>//*[@id='pass']</LocatorValue>
+	</password>
+	<loginbutton>
+		<LocatorType>CSS</LocatorType>
+		<LocatorValue>#submit</LocatorValue>
+	</loginbutton>	
+</LoginPage>
+<RegistrationPage>
+	<username>
+		<LocatorType>ID</LocatorType>
+		<LocatorValue>username</LocatorValue>
+	</username>
+	<password>
+		<LocatorType>XPATH</LocatorType>
+		<LocatorValue>//*[@id='pass']</LocatorValue>
+	</password>
+	<loginbutton>
+		<LocatorType>CSS</LocatorType>
+		<LocatorValue>#submit</LocatorValue>
+	</loginbutton>
+</RegistrationPage>
+</locators>
