@@ -13,13 +13,19 @@ namespace SeleniumAutomation.nunitlearning
     [Parallelizable]
     internal class TestParallel
     {
-        private IWebDriver driver;
+        //private IWebDriver driver;
+        public static ThreadLocal<IWebDriver> driver = new();
+
+        public static IWebDriver GetDriver()
+        {
+            return driver.Value;
+        }
 
         [SetUp]
         public void Setup()
         {
-           driver = new ChromeDriver();
-           driver.Url = "https://www.facebook.com/";            
+            driver.Value = new ChromeDriver();
+            GetDriver().Url = "https://www.facebook.com/";            
         }
 
         [TearDown]
@@ -27,9 +33,9 @@ namespace SeleniumAutomation.nunitlearning
         {
             if(driver!= null)
             {
-                driver.Quit();
-                driver.Dispose();
-                driver = null;
+                GetDriver().Quit();
+                GetDriver().Dispose();
+                driver.Value = null;
             }
         }
 
@@ -40,8 +46,8 @@ namespace SeleniumAutomation.nunitlearning
             DateTime currentTime = DateTime.Now;
             string time = currentTime.ToString("yyyy-MM_dd_HH-mm-ss");
             Console.WriteLine($"Logging in with {username} using {password} ---- {time}");
-            driver.FindElement(By.Id("email")).SendKeys(username);
-            driver.FindElement(By.Id("pass")).SendKeys(password);
+            GetDriver().FindElement(By.Id("email")).SendKeys(username);
+            GetDriver().FindElement(By.Id("pass")).SendKeys(password);
             Thread.Sleep(5000);
         }
 
