@@ -1,4 +1,5 @@
 ﻿using AventStack.ExtentReports;
+using AventStack.ExtentReports.MarkupUtils;
 using AventStack.ExtentReports.Reporter;
 using AventStack.ExtentReports.Reporter.Config;
 using NUnit.Framework;
@@ -75,14 +76,20 @@ namespace SeleniumAutomation.nunitlearning
             if (testStatus == TestStatus.Passed)
             {
                 test.Pass("Test case passed");
+                IMarkup markup = MarkupHelper.CreateLabel("PASS", ExtentColor.Green);
+                test.Pass(markup);
             }
             else if (testStatus == TestStatus.Skipped)
             {
-                test.Skip("Test case skipped");
+                test.Skip("Test Skipped : "+TestContext.CurrentContext.Result.Message);
+                IMarkup markup = MarkupHelper.CreateLabel("SKIP", ExtentColor.Amber);
+                test.Skip(markup);
             }
             else if (testStatus == TestStatus.Failed)
             {
-                test.Fail("Test case failed");
+                test.Fail("Test Failed : " + TestContext.CurrentContext.Result.Message);
+                IMarkup markup = MarkupHelper.CreateLabel("FAIL", ExtentColor.Red);
+                test.Fail(markup);
             }
         }
 
