@@ -1,103 +1,118 @@
 # Selenium Automation in C# 🚀
 
-This project contains practice test cases using Selenium WebDriver in C#.
-It demonstrates how to handle different types of web automation tasks such as alerts, waits, dropdowns, and iframes.
+This project contains practice using Selenium WebDriver in C#.
+A robust automation testing framework built with .NET 8, Selenium WebDriver, and NUnit, designed for scalability, maintainability, and easy integration into CI/CD pipelines. This framework supports data-driven, keyword-driven, and parallel testing, while providing rich test reports, screenshots, and logging.
 
-📂 Project Structure
-
-Each test case is under the namespace SeleniumAutomation.Testcases:
-
-🔹 TestAlerts
-
-Demonstrates handling JavaScript alerts on Rediff Login Page
-
-Switches to alert
-
-Prints alert text
-
-Accepts alert
-
-🔹 TestBrowser
-
-Runs Selenium tests across multiple browsers (Chrome, Firefox, Edge)
-
-Navigates to Gmail login
-
-Uses implicit and explicit waits (WebDriverWait)
-
-Demonstrates element interaction and error message handling
-
-🔹 TestDropdown
-
-Automates dropdown interaction on Wikipedia
-
-Uses SelectElement to choose languages
-
-Iterates through all dropdown options
-
-Scrapes and prints footer links
-
-🔹 TestFluentWait
-
-Example of Fluent Wait using DefaultWait<IWebDriver>
-
-Custom polling interval
-
-Ignores exceptions
-
-Waits dynamically for Gmail password field
-
-🔹 TestTryIT
-
-Demonstrates working with iframes on W3Schools TryIt Editor
-
-Switches into iframe
-
-Submits form inside the iframe
-
-Returns to default content
-
-Prints total number of frames
-
-⚙️ Technologies Used
-
-C# .NET
-
-Selenium WebDriver
-
-ChromeDriver, FirefoxDriver, EdgeDriver
-
-Selenium Support (Waits, ExpectedConditions)
-
-🏃 How to Run
-
-Clone the repo:
-
-git clone https://github.com/yourusername/your-repo-name.git
+__________________________________________________________________________________________________________
 
 
-Open the solution in Visual Studio
+### ✨ Features
 
-Install required NuGet packages:
+✅ Selenium WebDriver for browser automation
 
-Selenium.WebDriver
+✅ NUnit test runner with retry & parallel execution
 
-Selenium.Support
+✅ ExtentReports for rich HTML reports
 
-Selenium.WebDriver.ChromeDriver (and others as needed)
+✅ Log4Net logging with daily logs
 
-Update the browser path if required
+✅ Data-driven testing using Excel & ODS
 
-Run any class with a Main() method
+✅ Keyword-driven testing via XML locators
 
-💡 Why This Project?
+✅ Database integration (MySQL)
 
-This repo highlights my ability to:
+✅ Email notifications after test execution
 
-Build automation scripts in C#
+✅ Automatic screenshots on failure
 
-Apply best practices for Selenium
+✅ Cross-browser & Selenium Grid support
 
-Write clean, maintainable test code
+__________________________________________________________________________________________________________
 
-Work with real-world web elements recruiters often care about
+
+### 🛠️ Tech Stack
+
+Language: C# (.NET 8)
+
+Testing Framework: NUnit
+
+Automation Library: Selenium WebDriver
+
+Reporting: ExtentReports
+
+Logging: log4net
+
+Database: MySQL
+
+Build Tool: MSBuild
+
+__________________________________________________________________________________________________________
+
+### 📂 Project Structure
+
+| Folder / File              | Description                                   |
+|-----------------------------|-----------------------------------------------|
+| `Testcases/`               | Core Selenium test cases                      |
+| `nunitlearning/`           | NUnit tests & base classes                    |
+| `grid/`                    | Selenium Grid parallel execution              |
+| `utilities/`               | DB manager, mail sender, config readers       |
+| `resources/`               | Config, test data, XML locators               |
+| `reports/`                 | ExtentReports HTML results                    |
+| `screenshot/`              | Captured screenshots                          |
+| `Logs/`                    | Log files                                     |
+| `SeleniumAutomation.csproj`| Project configuration file                    |
+
+
+__________________________________________________________________________________________________________
+
+### 📌 Test Categories
+
+| Category                    | Example Testcases                                                                 |
+|----------------------------:|:----------------------------------------------------------------------------------|
+| **Browser & Navigation**    | `TestBrowser`, `TestNewWindows`, `TestHandlingTabsAndPopups`                     |
+| **UI Interactions**         | `TestDropdown`, `TestSlider`, `TestRightClick`, `TestResizable`, `TestDroppable` |
+| **Waits & Synchronization** | `TestFluentWait`, `TestElementPresence`                                          |
+| **Advanced Selenium (CDP)** | `TestCDPBadSSL`, `TestCDPGeoLocationOverride`, `TestCDPBlockNetworkRequest`      |
+| **Data & Config Driven**    | `KeywordDriven`, `TestParameterization`, `TestParameterizationExcel`             |
+| **Integration**             | `TestDB`, `TestMail`, `TestLogger`                                               |
+| **Parallel & Grid**         | `TestParallel`, `TestGridParallel`                                               |
+
+
+__________________________________________________________________________________________________________
+
+
+### ⚡ Getting Started
+
+1. Clone the repository git clone https://github.com/CR3XX12/SeleniumAutomationCSharp.git
+2. Install dependencies 
+
+    Ensure you have:
+
+    a) .NET 8 SDK
+
+    b). Visual Studio
+
+3. Configure resources
+
+Update resources/appsettings.json with environment details
+
+Update resources/locators.xml with element locators
+
+Add/update resources/testdata.xlsx for data-driven tests
+
+__________________________________________________________________________________________________________
+
+### 📊 Reports & Logs
+
+ExtentReports: Generated under /reports
+
+Screenshots: Saved under /screenshot
+
+Logs: Available in /Logs/logfile.log
+
+Example report preview:
+
+<img width="2557" height="1373" alt="image" src="https://github.com/user-attachments/assets/7d0d57a2-138e-4eab-bf7a-429142496bae" />
+
+
