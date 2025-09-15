@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Mark HTML reports as generated so GitHub Linguist ignores them
+SeleniumAutomation/reports/*.html linguist-generated
