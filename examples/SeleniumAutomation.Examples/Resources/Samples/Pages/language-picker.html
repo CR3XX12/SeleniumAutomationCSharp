@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Language selection demo</title>
+  <style>
+    body { font: 20px system-ui, sans-serif; max-width: 640px; margin: 80px auto; padding: 24px; }
+    label { display: block; margin-bottom: 12px; }
+    select, button { font: inherit; padding: 10px; }
+    #confirmation { margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <h1>Language selection</h1>
+  <p>A local page for practicing Selenium test debugging.</p>
+  <label for="language">Choose a language</label>
+  <select id="language">
+    <option value="">Select a language</option>
+    <option value="en">English</option>
+    <option value="es">Spanish</option>
+  </select>
+  <button id="confirm" type="button">Confirm</button>
+  <p id="confirmation" role="status"></p>
+  <script>
+    document.getElementById('confirm').addEventListener('click', () => {
+      const language = document.getElementById('language');
+      document.getElementById('confirmation').textContent = language.value
+        ? `Selected language: ${language.selectedOptions[0].textContent}`
+        : 'Choose a language first';
+    });
+  </script>
+</body>
+</html>

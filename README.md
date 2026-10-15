@@ -1,118 +1,79 @@
-# Selenium Automation in C# 🚀
+# Selenium Automation with C#
 
-This project contains practice using Selenium WebDriver in C#.
-A robust automation testing framework built with .NET 8, Selenium WebDriver, and NUnit, designed for scalability, maintainability, and easy integration into CI/CD pipelines. This framework supports data-driven, keyword-driven, and parallel testing, while providing rich test reports, screenshots, and logging.
+A collection of Selenium WebDriver and NUnit examples built while learning C# test automation. This repository is being developed incrementally into a QA portfolio, with the original exercises preserved separately from the application test suite planned for a later assignment.
 
-__________________________________________________________________________________________________________
+## Technology
 
+- C# targeting .NET 8
+- Selenium WebDriver and Selenium Support
+- NUnit and the NUnit test adapter
+- ExtentReports, log4net, EPPlus, and MySQL integration examples
 
-### ✨ Features
+## Repository structure
 
-✅ Selenium WebDriver for browser automation
+```text
+SeleniumAutomation.sln
+examples/
+  SeleniumAutomation.Examples/
+    Browser/                 Browser options, navigation, windows, and tabs
+    DataDriven/              Keyword-driven example
+    DevTools/                Chrome DevTools Protocol examples
+    Grid/                    Remote browser execution example
+    Integration/             Database, email, and logging examples
+    Interactions/            Alerts, dropdowns, mouse actions, frames, and screenshots
+    NUnit/                   Lifecycle, assertions, parameterization, retries, and reports
+    Resources/
+      Configuration/         Application settings and log4net configuration
+      Locators/              XML locator definitions
+      Samples/Screenshots/   Screenshots saved during the original exercises
+      TestData/              Excel test data and the original ODS workbook
+    Support/                 Shared helpers and the original path demonstration
+    SeleniumAutomation.Examples.csproj
+docs/
+  samples/reports/            HTML reports saved during the original exercises
+```
 
-✅ NUnit test runner with retry & parallel execution
+The examples remain in one project for this restructuring assignment. A dedicated `tests/` project will be added when application scenarios are implemented. The `NUnit/BaseTest.cs` file remains a namespace setup fixture; it is not yet a shared browser test base class.
 
-✅ ExtentReports for rich HTML reports
+## Build
 
-✅ Log4Net logging with daily logs
+Install an SDK that can build .NET 8 projects and the .NET 8 runtime. Open `SeleniumAutomation.sln` in Visual Studio, or run these commands from the repository root:
 
-✅ Data-driven testing using Excel & ODS
+```powershell
+dotnet restore SeleniumAutomation.sln
+dotnet build SeleniumAutomation.sln --no-restore
+```
 
-✅ Keyword-driven testing via XML locators
+## Working with the examples
 
-✅ Database integration (MySQL)
+For a visible browser example with two selectable test cases, follow [Debug a Selenium test in VS Code](docs/debugging-tests.md). It includes breakpoints, running a group, and screenshot locations.
 
-✅ Email notifications after test execution
+The project contains both console demonstrations using `Main()` and NUnit examples. Console demonstrations are not discovered as NUnit tests. The existing console startup object is `SeleniumAutomation.Examples.Integration.TestDB`; running the project starts that database example and requires a configured local MySQL database.
 
-✅ Automatic screenshots on failure
+List the NUnit examples without executing their test bodies:
 
-✅ Cross-browser & Selenium Grid support
+```powershell
+dotnet test SeleniumAutomation.sln --no-build --list-tests
+```
 
-__________________________________________________________________________________________________________
+To run a specific NUnit example, use its fully qualified name:
 
+```powershell
+dotnet test SeleniumAutomation.sln --no-build --filter "FullyQualifiedName~SeleniumAutomation.Examples.NUnit.TestParameterizationExcel"
+```
 
-### 🛠️ Tech Stack
+These are learning examples rather than a passing regression suite. Some deliberately fail or skip, some only print data, and browser examples depend on external websites. Grid, database, and email examples require separate setup. Existing credential handling and test behavior will be addressed in subsequent assignments.
 
-Language: C# (.NET 8)
+## Resources and output
 
-Testing Framework: NUnit
+Configuration, locator files, workbooks, and sample screenshots are copied to the build output under `Resources/`. Examples resolve these files relative to the compiled application rather than the shell's working directory.
 
-Automation Library: Selenium WebDriver
+Each NUnit execution (one selected test or a selected group) gets a folder under `bin/Debug/net8.0/artifacts/runs/run_<UTC timestamp>_<id>/`. Reports, screenshots, and logs generated by that execution go into its `reports/`, `screenshots/`, and `logs/` subfolders. The run folder is printed in test output. Only the five newest executions are retained locally; older run folders and their contents are deleted together. Run one execution at a time when using this simple local retention policy.
 
-Reporting: ExtentReports
+Generated output is ignored by Git through the `bin/` and `artifacts/` rules. Output from the previous layout is preserved as one `run_0000_legacy` archive, which counts toward the five-folder limit and rotates out as new runs are created. Historical reports in `docs/samples/reports/` and screenshots in `Resources/Samples/Screenshots/` remain tracked learning records.
 
-Logging: log4net
+Files are generated only by the examples that implement them: `ExtentReportsDemo` produces HTML reports; `BrowserDebugTests` produces screenshots and ChromeDriver logs. Shared reporting across all tests is still a future assignment. Selenium's downloaded browser and driver cache is separate from run artifacts and is reused across executions.
 
-Database: MySQL
+## Next assignment
 
-Build Tool: MSBuild
-
-__________________________________________________________________________________________________________
-
-### 📂 Project Structure
-
-| Folder / File              | Description                                   |
-|-----------------------------|-----------------------------------------------|
-| `Testcases/`               | Core Selenium test cases                      |
-| `nunitlearning/`           | NUnit tests & base classes                    |
-| `grid/`                    | Selenium Grid parallel execution              |
-| `utilities/`               | DB manager, mail sender, config readers       |
-| `resources/`               | Config, test data, XML locators               |
-| `reports/`                 | ExtentReports HTML results                    |
-| `screenshot/`              | Captured screenshots                          |
-| `Logs/`                    | Log files                                     |
-| `SeleniumAutomation.csproj`| Project configuration file                    |
-
-
-__________________________________________________________________________________________________________
-
-### 📌 Test Categories
-
-| Category                    | Example Testcases                                                                 |
-|----------------------------:|:----------------------------------------------------------------------------------|
-| **Browser & Navigation**    | `TestBrowser`, `TestNewWindows`, `TestHandlingTabsAndPopups`                     |
-| **UI Interactions**         | `TestDropdown`, `TestSlider`, `TestRightClick`, `TestResizable`, `TestDroppable` |
-| **Waits & Synchronization** | `TestFluentWait`, `TestElementPresence`                                          |
-| **Advanced Selenium (CDP)** | `TestCDPBadSSL`, `TestCDPGeoLocationOverride`, `TestCDPBlockNetworkRequest`      |
-| **Data & Config Driven**    | `KeywordDriven`, `TestParameterization`, `TestParameterizationExcel`             |
-| **Integration**             | `TestDB`, `TestMail`, `TestLogger`                                               |
-| **Parallel & Grid**         | `TestParallel`, `TestGridParallel`                                               |
-
-
-__________________________________________________________________________________________________________
-
-
-### ⚡ Getting Started
-
-1. Clone the repository git clone https://github.com/CR3XX12/SeleniumAutomationCSharp.git
-2. Install dependencies 
-
-    Ensure you have:
-
-    a) .NET 8 SDK
-
-    b). Visual Studio
-
-3. Configure resources
-
-Update resources/appsettings.json with environment details
-
-Update resources/locators.xml with element locators
-
-Add/update resources/testdata.xlsx for data-driven tests
-
-__________________________________________________________________________________________________________
-
-### 📊 Reports & Logs
-
-ExtentReports: Generated under /reports
-
-Screenshots: Saved under /screenshot
-
-Logs: Available in /Logs/logfile.log
-
-Example report preview:
-
-<img width="2557" height="1373" alt="image" src="https://github.com/user-attachments/assets/7d0d57a2-138e-4eab-bf7a-429142496bae" />
-
-
+Remove embedded credentials and introduce environment-based configuration before building the application test suite. Future assignments will add browser lifecycle management, page objects, meaningful assertions, and CI in separate changes.
