@@ -16,7 +16,7 @@ SeleniumAutomation.sln
 tests/
   SeleniumAutomation.Tests/
     Configuration/           Environment-based application URL and headless setting
-    Infrastructure/          Browser lifecycle, failure capture, and run artifacts
+    Infrastructure/          Browser lifecycle, HTML reporting, and run artifacts
     Pages/                   Login and Products page objects
     TestData/                Public practice accounts and typed JSON website content
     Tests/                   Login smoke scenarios and assertions
@@ -97,4 +97,4 @@ Each project's NUnit execution (one selected test or a selected group) gets a fo
 
 Generated output is ignored by Git through the `bin/` and `artifacts/` rules. Output from the previous layout is preserved as one `run_0000_legacy` archive, which counts toward the five-folder limit and rotates out as new runs are created. Historical reports in `docs/samples/reports/` and screenshots in `Resources/Samples/Screenshots/` remain tracked learning records.
 
-The portfolio suite saves ChromeDriver logs for each case and attaches screenshots when a test fails. It does not yet generate HTML reports. In the examples project, `ExtentReportsDemo` produces HTML reports and `BrowserDebugTests` produces step screenshots and ChromeDriver logs. Selenium's downloaded browser and driver cache is separate from run artifacts and is reused across executions.
+The portfolio suite writes an ExtentReports HTML dashboard to each run's `reports/index.html`. It contains each selected case's steps, outcome, failure details when applicable, and a final browser screenshot for passed and failed tests. Screenshots are embedded in the report and also saved in `screenshots/`; ChromeDriver logs are saved in `logs/`. The HTML report path is printed in test output. A browser startup failure may prevent screenshot capture. In the examples project, `ExtentReportsDemo` remains a separate reporting exercise. Selenium's downloaded browser and driver cache is separate from run artifacts and is reused across executions.

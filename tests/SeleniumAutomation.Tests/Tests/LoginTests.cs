@@ -14,10 +14,13 @@ public class LoginTests : BrowserTest
     public void ValidUserCanViewProducts()
     {
         var login = new LoginPage(Driver);
+        LogStep("Open the login page");
         login.Open(Settings.BaseUrl);
 
+        LogStep("Submit valid credentials for the standard practice user");
         login.SubmitCredentials(DemoUsers.Standard, DemoUsers.Password);
 
+        LogStep("Verify the Products heading, inventory URL, and available products");
         var products = new ProductsPage(Driver);
         Assert.That(products.Heading, Is.EqualTo(Content.Products.Heading));
         Assert.That(products.UrlPath, Is.EqualTo("/inventory.html"));
@@ -28,10 +31,13 @@ public class LoginTests : BrowserTest
     public void RejectedLoginShowsExpectedError(string username, string password, string expectedError)
     {
         var login = new LoginPage(Driver);
+        LogStep("Open the login page");
         login.Open(Settings.BaseUrl);
 
+        LogStep("Submit credentials for the rejected-login scenario");
         login.SubmitCredentials(username, password);
 
+        LogStep("Verify the expected error and that the user stays on the login page");
         Assert.That(login.ErrorMessage, Is.EqualTo(expectedError));
         Assert.That(new Uri(Driver.Url).AbsolutePath, Is.EqualTo(Settings.BaseUrl.AbsolutePath));
     }

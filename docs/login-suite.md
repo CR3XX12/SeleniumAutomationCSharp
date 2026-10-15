@@ -57,17 +57,23 @@ The rejected-login cases now use NUnit's `TestCaseSource`: attributes cannot con
 
 Only `en-US` is implemented. The loader accepts a culture name for future content files, but these tests currently select `en-US`. Adding another file would not switch the application's language; application locale selection and supported language coverage require a separate change. Review wording changes against the intended requirements before updating expected content.
 
-## Failure evidence and retention
+## HTML reports, screenshots, and retention
 
 The output prints the run directory:
 
 ```text
 tests/SeleniumAutomation.Tests/bin/Debug/net8.0/artifacts/runs/run_<UTC timestamp>_<id>/
   logs/          ChromeDriver diagnostic logs
-  screenshots/   Screenshot captured when an assertion or test action fails
+  screenshots/   Final browser state for each passed or failed case
+  reports/
+    index.html   HTML dashboard for the selected tests
 ```
 
-Screenshots are attached to NUnit results. Browser startup failures may occur before a screenshot is possible. The original test failure is preserved if screenshot capture fails. Successful cases create logs but do not create screenshots. HTML reporting will be a separate assignment.
+Run one case or the whole `LoginTests` fixture; both generate a report containing only the selected cases. After execution, find `HTML report:` in the test output, or open the latest run folder's `reports/index.html` in a browser. In VS Code, right-click the HTML file, choose **Reveal in File Explorer**, and double-click it. Select a case in the report to inspect its logged steps, result, and screenshot thumbnail.
+
+The dashboard records passed, failed, and skipped outcomes. Failed cases include the NUnit error and stack trace. The final browser screenshot is captured before browser cleanup for passing and failing cases, embedded in the HTML, saved as a PNG, and attached to NUnit results. This is an end-of-test screenshot, not a video or a screenshot of every action. An invalid-password scenario passes when it correctly verifies the expected error; its screenshot shows the login error as evidence of the expected result.
+
+The report is updated after each case and flushed again at the end of the selected run. It is not automatically opened. Let the test finish normally; stopping the debugger abruptly can interrupt capture or saving. Browser startup failures may occur before a screenshot is possible, and discovery failures before test setup cannot be recorded by this reporting hook. Screenshot-capture errors are logged without replacing the original test outcome. ExtentReports may load dashboard styling or scripts from its CDN when you open the report; screenshots themselves are embedded.
 
 This project keeps the latest five executions independently of the examples project. Older execution folders are deleted locally. Generated output is Git-ignored. Run one execution at a time when using this local retention policy.
 
@@ -75,4 +81,4 @@ This project keeps the latest five executions independently of the examples proj
 
 These three scenarios are a login smoke suite, not complete authentication or security coverage. They do not cover cart and checkout, blank fields, logout, session persistence, accessibility, API behavior, or multiple browsers. An external outage or application change can fail the suite.
 
-Next: add HTML reports to these actual browser tests, then expand user journeys and introduce CI in separate commits.
+Next: expand cart and checkout user journeys, then introduce CI in separate commits.

@@ -1,10 +1,13 @@
 using NUnit.Framework;
+using SeleniumAutomation.Tests.Infrastructure;
 
 namespace SeleniumAutomation.Tests;
 
 [SetUpFixture]
 public class TestRun
 {
+    internal static RunReport Report { get; private set; } = null!;
+
     public static string DirectoryPath { get; } = Path.Combine(
         AppContext.BaseDirectory, "artifacts", "runs",
         $"run_{DateTime.UtcNow:yyyyMMdd_HHmmss_fffffff}_{Guid.NewGuid():N}");
@@ -22,10 +25,21 @@ public class TestRun
         Directory.CreateDirectory(DirectoryPath);
         TestContext.Progress.WriteLine($"Run artifacts: {DirectoryPath}");
         CleanOldRuns();
+        Report = new RunReport();
     }
 
     [OneTimeTearDown]
-    public void FinishRun() => CleanOldRuns();
+    public void FinishRun()
+    {
+        try
+        {
+            Report.Flush();
+        }
+        finally
+        {
+            CleanOldRuns();
+        }
+    }
 
     private static void CleanOldRuns()
     {
