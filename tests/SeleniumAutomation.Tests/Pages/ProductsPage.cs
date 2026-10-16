@@ -1,30 +1,25 @@
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
+using SeleniumAutomation.Tests.Infrastructure;
 
 namespace SeleniumAutomation.Tests.Pages;
 
 public class ProductsPage
 {
     private readonly IWebDriver driver;
-    private readonly WebDriverWait wait;
+    private readonly BrowserActions actions;
+    private static readonly By Title = By.CssSelector("[data-test='title']");
+    private static readonly By Products = By.CssSelector("[data-test='inventory-item']");
 
-    public ProductsPage(IWebDriver driver)
+    public ProductsPage(IWebDriver driver, BrowserActions actions)
     {
         this.driver = driver;
-        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+        this.actions = actions;
     }
 
-    public string Heading => wait.Until(browser =>
-    {
-        var title = browser.FindElement(By.CssSelector("[data-test='title']"));
-        return title.Displayed ? title.Text : null;
-    });
+    public string Heading => actions.Element("Read visible Products heading", Title,
+        element => element.Text, requireText: true);
 
-    public int ProductCount => wait.Until(browser =>
-    {
-        var products = browser.FindElements(By.CssSelector("[data-test='inventory-item']"));
-        return products.Count > 0 ? products : null;
-    }).Count;
+    public int ProductCount => actions.CountElements("Count available products", Products);
 
-    public string UrlPath => new Uri(driver.Url).AbsolutePath;
+    public string UrlPath => actions.Run("Read current URL path", null, () => new Uri(driver.Url).AbsolutePath);
 }

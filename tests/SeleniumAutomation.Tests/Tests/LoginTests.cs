@@ -13,15 +13,12 @@ public class LoginTests : BrowserTest
     [Test]
     public void ValidUserCanViewProducts()
     {
-        var login = new LoginPage(Driver);
-        LogStep("Open the login page");
+        var login = new LoginPage(Driver, Actions);
         login.Open(Settings.BaseUrl);
 
-        LogStep("Submit valid credentials for the standard practice user");
         login.SubmitCredentials(DemoUsers.Standard, DemoUsers.Password);
 
-        LogStep("Verify the Products heading, inventory URL, and available products");
-        var products = new ProductsPage(Driver);
+        var products = new ProductsPage(Driver, Actions);
         Assert.That(products.Heading, Is.EqualTo(Content.Products.Heading));
         Assert.That(products.UrlPath, Is.EqualTo("/inventory.html"));
         Assert.That(products.ProductCount, Is.GreaterThan(0));
@@ -30,16 +27,13 @@ public class LoginTests : BrowserTest
     [TestCaseSource(nameof(RejectedLoginCases))]
     public void RejectedLoginShowsExpectedError(string username, string password, string expectedError)
     {
-        var login = new LoginPage(Driver);
-        LogStep("Open the login page");
+        var login = new LoginPage(Driver, Actions);
         login.Open(Settings.BaseUrl);
 
-        LogStep("Submit credentials for the rejected-login scenario");
         login.SubmitCredentials(username, password);
 
-        LogStep("Verify the expected error and that the user stays on the login page");
         Assert.That(login.ErrorMessage, Is.EqualTo(expectedError));
-        Assert.That(new Uri(Driver.Url).AbsolutePath, Is.EqualTo(Settings.BaseUrl.AbsolutePath));
+        Assert.That(login.UrlPath, Is.EqualTo(Settings.BaseUrl.AbsolutePath));
     }
 
     public static IEnumerable<TestCaseData> RejectedLoginCases()

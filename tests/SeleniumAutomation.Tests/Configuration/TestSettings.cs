@@ -1,6 +1,8 @@
+using System.Diagnostics;
+
 namespace SeleniumAutomation.Tests.Configuration;
 
-public sealed record TestSettings(Uri BaseUrl, bool Headless)
+public sealed record TestSettings(Uri BaseUrl, bool Headless, bool HighlightElements)
 {
     public static TestSettings FromEnvironment()
     {
@@ -17,6 +19,13 @@ public sealed record TestSettings(Uri BaseUrl, bool Headless)
             throw new ArgumentException("TEST_HEADLESS must be true or false.");
         }
 
-        return new TestSettings(uri, headless);
+        string highlightValue = Environment.GetEnvironmentVariable("TEST_HIGHLIGHT_ELEMENTS")
+            ?? Debugger.IsAttached.ToString();
+        if (!bool.TryParse(highlightValue, out bool highlightElements))
+        {
+            throw new ArgumentException("TEST_HIGHLIGHT_ELEMENTS must be true or false.");
+        }
+
+        return new TestSettings(uri, headless, highlightElements);
     }
 }

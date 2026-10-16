@@ -16,6 +16,7 @@ public abstract class BrowserTest
     protected IWebDriver Driver => driver ?? throw new InvalidOperationException("Browser has not started.");
     protected TestSettings Settings { get; private set; } = null!;
     protected WebsiteContent Content { get; private set; } = null!;
+    protected BrowserActions Actions { get; private set; } = null!;
 
     [SetUp]
     public void StartBrowser()
@@ -25,6 +26,8 @@ public abstract class BrowserTest
         Settings = TestSettings.FromEnvironment();
         Content = WebsiteContentLoader.Load();
         driver = BrowserFactory.Create(Settings);
+        Actions = new BrowserActions(driver, Settings.HighlightElements,
+            LogStep, message => reportTest.Fail(WebUtility.HtmlEncode(message)));
         Driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
     }
 

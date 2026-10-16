@@ -14,6 +14,8 @@ Verify three important login outcomes against the public [Sauce Demo practice ap
 
 Each case starts with a fresh browser profile and closes its browser in teardown. Page objects own selectors, explicit waits, and interactions. Tests own the expected outcomes and assertions. There are no fixed sleeps or automatic retries.
 
+When adding a scenario, construct its page objects, call their interactions, and assert the expected outcome. Test methods do not need manual step logs, screenshot calls, or report flushes. Page operations provide locator logs, match counts, timings, and optional highlights automatically; `BrowserTest` records the outcome and final screenshot. For example, `SubmitCredentials` uses a single click operation that already waits for the login button to be visible and enabled, so a second explicit wait step is unnecessary.
+
 ## Run and debug
 
 From the repository root:
@@ -42,8 +44,27 @@ In VS Code, use the Testing panel under `SeleniumAutomation.Tests` → `LoginTes
 | --- | --- | --- |
 | `TEST_BASE_URL` | `https://www.saucedemo.com/` | URL of Sauce Demo or a compatible deployed copy |
 | `TEST_HEADLESS` | `false` | Use `true` to run without visible browser windows |
+| `TEST_HIGHLIGHT_ELEMENTS` | Whether a debugger is attached | Use `true` for element outlines, or `false` to disable them even when debugging |
 
 Set variables in the terminal where you run `dotnet test`. A VS Code debug session inherits its environment from VS Code, so a variable set in an integrated terminal does not automatically change the Testing panel's environment.
+
+## Visual element debugging
+
+When you choose **Debug Test**, highlighting defaults to on. Use F10 to step over a page operation, then inspect Chrome: the exact element used by that operation has a magenta outline. Each new operation restores the previous outline before selecting its next target. No sleeps or automatic debugger pauses are added. A click that navigates can replace the outlined element, so step into the page method and set a breakpoint on `return operation(element);` in `BrowserActions.Element` if you need to pause before the click itself.
+
+Element actions report the number of locator matches and select the first match in DOM order, waiting for that first element to be visible (and enabled or nonempty where required). If two similar items match, only the chosen item is outlined. Collection operations such as counting products outline all matched items and label the target as a collection. Match counts are reported even when highlighting is disabled. Counts describe the lookup at that moment; a dynamic page can change afterward.
+
+A URL assertion has no page element to highlight. Browser-level operations clear the previous outline; inspect the URL value in VS Code or the address bar instead. Highlighting changes only inline outline styles and restores prior values, including their CSS priority. It does not change selectors or add a delay. Screenshots captured while it is enabled may include outlines. If the browser cannot apply the highlight, an informational entry is logged and the original test action proceeds.
+
+To use it without a debugger in PowerShell:
+
+```powershell
+$env:TEST_HIGHLIGHT_ELEMENTS = "true"
+dotnet test tests/SeleniumAutomation.Tests/SeleniumAutomation.Tests.csproj --filter "TestCategory=Smoke"
+Remove-Item Env:TEST_HIGHLIGHT_ELEMENTS
+```
+
+`ElementHighlightTests` (category `Framework`) uses a local page to check duplicate matches, collection highlighting, restoration of original outlines, and disabled mode. These checks are separate from the three Sauce Demo smoke scenarios.
 
 Chrome for Testing and its matching driver are resolved through Selenium Manager, separately from the installed Chrome. Downloads are cached. Internet access is required for the website and for the initial browser download. The stable browser channel may change over time.
 
@@ -72,6 +93,10 @@ tests/SeleniumAutomation.Tests/bin/Debug/net8.0/artifacts/runs/run_<UTC timestam
 Run one case or the whole `LoginTests` fixture; both generate a report containing only the selected cases. After execution, find `HTML report:` in the test output, or open the latest run folder's `reports/index.html` in a browser. In VS Code, right-click the HTML file, choose **Reveal in File Explorer**, and double-click it. Select a case in the report to inspect its logged steps, result, and screenshot thumbnail.
 
 The dashboard records passed, failed, and skipped outcomes. Failed cases include the NUnit error and stack trace. The final browser screenshot is captured before browser cleanup for passing and failing cases, embedded in the HTML, saved as a PNG, and attached to NUnit results. This is an end-of-test screenshot, not a video or a screenshot of every action. An invalid-password scenario passes when it correctly verifies the expected error; its screenshot shows the login error as evidence of the expected result.
+
+Page-object operations also log their action, Selenium locator, source filename and line, and duration. Each operation records when it starts and completes. If an operation throws, the report marks that specific action failed and includes the exception type and message; the original exception is rethrown so NUnit retains its stack trace. A failing assertion after a successful read appears in the test-level failure entry, with the preceding read showing which locator supplied the value. Navigation and URL reads are labeled as browser-level operations without an element locator.
+
+For example, `Click login button | Locator: By.CssSelector: [data-test='login-button'] | Source: LoginPage.cs:<line> (SubmitCredentials)` identifies the selector and code to inspect. These entries come from the operations wrapped by `BrowserActions`; they are not automatic interception of every WebDriver command. Action labels omit entered credentials. The separate verbose ChromeDriver diagnostic logs can contain command arguments and should be treated as local debugging artifacts.
 
 The report is updated after each case and flushed again at the end of the selected run. It is not automatically opened. Let the test finish normally; stopping the debugger abruptly can interrupt capture or saving. Browser startup failures may occur before a screenshot is possible, and discovery failures before test setup cannot be recorded by this reporting hook. Screenshot-capture errors are logged without replacing the original test outcome. ExtentReports may load dashboard styling or scripts from its CDN when you open the report; screenshots themselves are embedded.
 

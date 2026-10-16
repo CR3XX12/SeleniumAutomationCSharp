@@ -1,40 +1,38 @@
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
+using SeleniumAutomation.Tests.Infrastructure;
 
 namespace SeleniumAutomation.Tests.Pages;
 
 public class LoginPage
 {
     private readonly IWebDriver driver;
-    private readonly WebDriverWait wait;
+    private readonly BrowserActions actions;
     private static readonly By Username = By.CssSelector("[data-test='username']");
     private static readonly By Password = By.CssSelector("[data-test='password']");
     private static readonly By LoginButton = By.CssSelector("[data-test='login-button']");
     private static readonly By Error = By.CssSelector("[data-test='error']");
 
-    public LoginPage(IWebDriver driver)
+    public LoginPage(IWebDriver driver, BrowserActions actions)
     {
         this.driver = driver;
-        wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+        this.actions = actions;
     }
 
     public void Open(Uri baseUrl)
     {
-        driver.Navigate().GoToUrl(baseUrl);
-        wait.Until(browser => browser.FindElement(Username).Displayed);
+        actions.Run("Navigate to login page", null, () => driver.Navigate().GoToUrl(baseUrl));
+        actions.Element("Wait for username field to be visible", Username, element => element.Displayed);
     }
 
     public void SubmitCredentials(string username, string password)
     {
-        driver.FindElement(Username).SendKeys(username);
-        driver.FindElement(Password).SendKeys(password);
-        wait.Until(browser => browser.FindElement(LoginButton).Enabled);
-        driver.FindElement(LoginButton).Click();
+        actions.Element("Enter username", Username, element => element.SendKeys(username));
+        actions.Element("Enter password (value hidden)", Password, element => element.SendKeys(password));
+        actions.Element("Click login button", LoginButton, element => element.Click(), requireEnabled: true);
     }
 
-    public string ErrorMessage => wait.Until(browser =>
-    {
-        var error = browser.FindElement(Error);
-        return error.Displayed && !string.IsNullOrWhiteSpace(error.Text) ? error.Text : null;
-    });
+    public string ErrorMessage => actions.Element("Read visible login error text", Error,
+        element => element.Text, requireText: true);
+
+    public string UrlPath => actions.Run("Read current URL path", null, () => new Uri(driver.Url).AbsolutePath);
 }
